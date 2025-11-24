@@ -1,0 +1,15 @@
+---
+title: "Corso ARCA"
+author: "Andrea Nazzaro"
+date: "2025-11-24"
+bibliography: bibliography.bib
+format: 
+  html: 
+    toc: true
+    toc-title: Contents
+    # titolo della table of contents
+    toc-location: left
+    # dove piazzare la table of contents
+    number-sections: true
+    embed-resources: true
+---
