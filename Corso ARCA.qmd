@@ -2,14 +2,146 @@
 title: "Corso ARCA"
 author: "Andrea Nazzaro"
 date: "2025-11-24"
-bibliography: bibliography.bib
 format: 
   html: 
     toc: true
     toc-title: Contents
-    # titolo della table of contents
-    toc-location: left
-    # dove piazzare la table of contents
+    toc-location: right
     number-sections: true
     embed-resources: true
+    fig-width: 3
+    fig-height: 3
+execute:
+  cache: true
+  echo: true
+bibliography: "bibliografia_ARCA.bib"
+bibliographystyle: apa7
 ---
+
+```{r}
+#| echo: false
+
+rm(list=ls())
+```
+
+```{r}
+#| echo: false
+
+library(readxl)
+dataset <- read_excel("Sara_dataset.xls")
+View(dataset)
+```
+
+```{r}
+library(pastecs)
+dataset$mathquiz <- ifelse(is.na(dataset$mathquiz), mean(dataset$mathquiz, na.rm=TRUE), dataset$mathquiz)
+mean(dataset$mathquiz)
+```
+# Medie
+
+::::: columns
+::: {.column width="50%"}
+
+## Medie frequenza cardiaca
+
+```{r}
+#| echo: false
+
+mean_hr_base <- mean(dataset$hr_base)
+mean_hr_pre <- mean(dataset$hr_pre)
+mean_hr_post <- mean(dataset$hr_post)
+```
+
+Livelli dell'heart rate:
+
+-   [HR_base]{style="color:red;"} $media =$ `r mean_hr_base`
+
+-   [HR_post]{style="color:green;"} $media =$ `r mean_hr_post` 
+
+-   [HR_pre]{style="color:blue;"} $media =$ `r mean_hr_pre`
+
+
+![](cardiologo.png){.absolute width="100" height="100" fig-align="center"}
+
+### Grafichetto
+
+```{r}
+#| echo: false
+#| fig.cap: "Grafico sulla frequenza cardiaca"
+#| label: fig-mean_hr
+
+mean_values_hr <- dataset %>%
+  summarise(
+    hr_base_mean = mean(hr_base, na.rm = TRUE),
+    hr_pre_mean  = mean(hr_pre, na.rm = TRUE),
+    hr_post_mean = mean(hr_post, na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = everything(),
+               names_to = "fase",
+               values_to = "media")
+
+ggplot(mean_values_hr, aes(x = fase, y = media)) +
+  geom_col(width = 0.6, fill = "tomato") +
+  theme_minimal() +
+  labs(title = "Medie delle frequenze cardiache", x = "Fase", y = "Frequenza cardiaca media") + 
+  scale_y_continuous(breaks=c(0, 80)) + 
+  coord_cartesian(ylim=c(60, 80))
+```
+
+:::
+
+::: {.column width="50%"}
+
+## Medie ansia
+
+```{r}
+#| echo: false
+
+mean_anx_base <- mean(dataset$anx_base)
+mean_anx_pre <- mean(dataset$anx_pre)
+mean_anx_post <- mean(dataset$anx_post)
+```
+
+Livelli dell'ansia:
+
+-   [anx_base]{style="color:red;"} $media =$ `r mean_anx_base`
+
+-   [anx_post]{style="color:green;"} $media =$ `r mean_anx_post`
+
+-   [anx_pre]{style="color:blue;"} $media =$ `r mean_anx_pre`
+
+![](ansia.jpg){.absolute width="150" height="100" fig-align="center"}
+
+### Grafichetto
+
+```{r}
+#| echo: false
+#| fig.cap: "Grafico sull'ansia"
+#| label: fig-mean_anx
+
+mean_values_anx <- dataset %>%
+  summarise(
+    anx_base_mean = mean(anx_base, na.rm = TRUE),
+    anx_pre_mean  = mean(anx_pre, na.rm = TRUE),
+    anx_post_mean = mean(anx_post, na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols = everything(),
+               names_to = "fase",
+               values_to = "media")
+
+ggplot(mean_values_anx, aes(x = fase, y = media)) +
+  geom_col(width = 0.6, fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Livelli medi di ansia", x = "Fase", y = "Ansia media") +
+  scale_y_continuous(breaks=c(0, 20)) + 
+  coord_cartesian(ylim=c(15, 20))
+```
+
+:::
+:::::
+
+<!-- per fare commenti si fa CTRL+SHIFT+C -->
+
+# Conclusioni
+
+In questo lavoro ho cercato di utilizzare tutte le informazioni e conoscenze apprese durante questa prima parte del corso per creare una pagina HTML aesthetically pleasing. Ho deciso di analizzare le frequenze delle medie della frequenza cardiaca e dei livelli d'ansia: come evidenziato dalla @fig-mean_hr, i partecipanti allo studio presentavano una frequenza cardiaca maggiore nel pre-test rispetto al post-test, andamento lievemente comparabile con la condizione evidenziata da @fig-mean_anx in cui l'ansia pre è leggermente maggiore del post. Questo andamento è evidenziato dalla ricerca di @craske2011anxiety.
