@@ -16,7 +16,7 @@ execute:
   echo: true
 bibliography: "bibliografia_ARCA.bib"
 bibliographystyle: apa7
-self-contained: true
+self-contained: true 
 ---
 
 ```{r}
