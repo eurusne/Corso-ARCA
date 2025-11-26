@@ -1,0 +1,159 @@
+---
+title: "Ansia Matematica"
+author: "Andrea Nazzaro"
+format:
+  revealjs:
+    theme: solarized
+    slide-number: c/t
+    transition: slide
+    background-transition: fade
+    footer: "eurusne"
+    self-contained: true
+    embed-resources: true
+    code-fold: true
+    toc: true
+    toc-title: Titolo
+    bibliography: bibliografia_ARCA.bib
+execute:
+  echo: true
+  output: true
+editor: source
+---
+
+## Chi è Sara? {.scrollable}
+
+Sara è una ragazza come tante a psicologia che ha deciso di studiare la relazione fra ansia e matematica.
+
+. . .
+
+![Lei è Sara che si chiede perché ha scelto psicologia](figures/sara.webp) {.absolute width="50" height="50"}
+
+## Cos'è l'ansia matematica? {transition="zoom"}
+
+L'ansia per la matematica è uno stato di [agitazione]{style="color:red;"} causato dall'esecuzione di compiti matematici, caratterizzato da [apprensione]{style="color:blue;"}, [avversione]{style="color:green;"} e [frustrazione]{style="color:gold;"}^[StateOfMind]
+
+. . .
+
+Si può provare ansia riguardo:
+
+::: {.incremental}
+
+- apprendimento
+
+- prestazione
+
+- giudizio altrui
+
+- impotenza
+
+:::
+
+## Perché studiare l'ansia matematica? {transition="zoom"}
+
+Secondo un'inchiesta di [Repubblica](https://www.repubblica.it/italia/2024/11/20/news/matematica_paura_italia_ocse-423657674/), gli italiani sarebbero primi in Europa per l’ansia da matematica, come anche riportato dall'articolo di 
+<!-- inserisci citazione alla fine di Franchino et al.(2025). -->
+
+## Studio dell'ansia su studenti universitari
+
+Per comprendere meglio come l'ansia matematica si distribuisca fra gli studenti universitari, Sara ha deciso di fare un'analisi di diversi fattori ed è venuta fuori con alcuni risultati.
+
+![](figures/ansia_matematica.jpg){.absolute fig-align="center"}
+
+## Studio dell'ansia su studenti universitari {.unlisted .scrollable}
+
+Questo è il dataset di riferimento di Sara:
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| output-location: fragment
+
+library(readxl)
+Sara_dataset <- read_excel("Sara_dataset.xls")
+str(Sara_dataset)
+```
+
+## Violinplot dell'ansia di base
+
+Sara ha analizzato la relazione fra l'ansia di base le diverse lauree. 
+
+```{r}
+#| echo: false
+#| output: false
+
+library(dplyr)
+Sara_dataset <- Sara_dataset %>%
+  mutate(
+    major = recode(
+      major,
+      `1` = "psicologia",
+      `2` = "medicina",
+      `3` = "biologia",
+      `4` = "sociologia",
+      `5` = "economia"
+    )
+  )
+
+Sara_dataset <- Sara_dataset %>%
+  mutate(
+    gender = recode(
+      gender, 
+      `1` = "femmina",
+      `2` = "maschio"
+    )
+  )
+
+Sara_dataset <- Sara_dataset %>%
+  mutate(
+    cond = recode(
+      cond,
+      `1` = "facile",
+      `2` = "medio",
+      `3` = "difficile",
+      `4` = "impossibile"
+    )
+  )
+
+Sara_dataset$gender <- as.factor(Sara_dataset$gender)
+Sara_dataset$major <- as.factor(Sara_dataset$major)
+Sara_dataset$cond <- as.factor(Sara_dataset$cond)
+```
+
+```{r}
+#| echo: false
+#| output: false
+
+library(ggplot2)
+viol_anx_base <- ggplot(Sara_dataset, aes(x = major, y = anx_base)) +
+  geom_violin(trim = FALSE, position=position_dodge(1), fill="skyblue", alpha = 0.7) +
+  geom_boxplot(width= 0.2, position=position_dodge(1))
+  theme_minimal() +
+  labs(
+    title = "Distribuzione dei livelli di ansia per major",
+    x = "Major",
+    y = "Livelli di ansia base",
+    )
+```
+```{r}
+#| echo: false
+
+viol_anx_base
+```
+
+## Violinplot dell'ansia di base
+
+Sara ha analizzato la relazione fra l'ansia di base le diverse lauree.
+
+. . .
+
+Da ciò che si evince dal grafico, gli studenti di psicologia e di sociologia presentano un'ansia di base maggiore rispetto agli studenti delle altre lauree, mentre i biologhi appaiono meno ansiosi.
+
+:::::
+:::
+
+![Psicologa arrabbiata](figures/psicologo_arrabbiato.jpg){width="250" height="150" fig-align="center"}
+:::
+
+:::
+![Sociologo arrabbiato](figures/sociologo_arrabbiato.webp){width="250" height="150" fig-align="center"}
+:::
