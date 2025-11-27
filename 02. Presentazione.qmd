@@ -22,42 +22,57 @@ editor: source
 
 ## Chi è Sara? {.scrollable}
 
+```{r}
+#| echo: false
+
+rm(list=ls())
+```
+
 Sara è una ragazza come tante a psicologia che ha deciso di studiare la relazione fra ansia e matematica.
 
 . . .
 
-![Lei è Sara che si chiede perché ha scelto psicologia](figures/sara.webp) {.absolute width="50" height="50"}
+![Lei è Sara che si chiede perché ha scelto psicologia](figures/sara.webp){width="400" height="400" fig-align="center"}
 
 ## Cos'è l'ansia matematica? {transition="zoom"}
 
-L'ansia per la matematica è uno stato di [agitazione]{style="color:red;"} causato dall'esecuzione di compiti matematici, caratterizzato da [apprensione]{style="color:blue;"}, [avversione]{style="color:green;"} e [frustrazione]{style="color:gold;"}^[StateOfMind]
+L'ansia per la matematica è uno stato di [agitazione]{style="color:red;"} causato dall'esecuzione di compiti matematici, caratterizzato da [apprensione]{style="color:blue;"}, [avversione]{style="color:green;"} e [frustrazione]{style="color:gold;"}[^1]
+
+[^1]: StateOfMind
 
 . . .
 
 Si può provare ansia riguardo:
 
-::: {.incremental}
+::: incremental
+-   apprendimento
 
-- apprendimento
+-   prestazione
 
-- prestazione
+-   giudizio altrui
 
-- giudizio altrui
-
-- impotenza
-
+-   impotenza
 :::
 
 ## Perché studiare l'ansia matematica? {transition="zoom"}
 
-Secondo un'inchiesta di [Repubblica](https://www.repubblica.it/italia/2024/11/20/news/matematica_paura_italia_ocse-423657674/), gli italiani sarebbero primi in Europa per l’ansia da matematica, come anche riportato dall'articolo di 
-<!-- inserisci citazione alla fine di Franchino et al.(2025). -->
+Secondo un'inchiesta di [Repubblica](https://www.repubblica.it/italia/2024/11/20/news/matematica_paura_italia_ocse-423657674/), gli italiani sarebbero primi in Europa per l’ansia da matematica, come anche riportato dall'articolo di @article
+
+. . .
+
+::: {style="text-align: center; font-size: 2em; color: red;"}
+Italia prima per ansia matematica
+:::
+
+::: {style="text-align: center; font-size: 0.5em;"}
+Andiamo a Berlino Beppe
+:::
 
 ## Studio dell'ansia su studenti universitari
 
 Per comprendere meglio come l'ansia matematica si distribuisca fra gli studenti universitari, Sara ha deciso di fare un'analisi di diversi fattori ed è venuta fuori con alcuni risultati.
 
-![](figures/ansia_matematica.jpg){.absolute fig-align="center"}
+![](figures/ansia_matematica.jpg){width="500" height="300" fig-align="center"}
 
 ## Studio dell'ansia su studenti universitari {.unlisted .scrollable}
 
@@ -75,7 +90,7 @@ str(Sara_dataset)
 
 ## Violinplot dell'ansia di base
 
-Sara ha analizzato la relazione fra l'ansia di base le diverse lauree. 
+Sara ha analizzato la relazione fra l'ansia di base le diverse lauree.
 
 ```{r}
 #| echo: false
@@ -124,9 +139,14 @@ Sara_dataset$cond <- as.factor(Sara_dataset$cond)
 #| output: false
 
 library(ggplot2)
-viol_anx_base <- ggplot(Sara_dataset, aes(x = major, y = anx_base)) +
-  geom_violin(trim = FALSE, position=position_dodge(1), fill="skyblue", alpha = 0.7) +
-  geom_boxplot(width= 0.2, position=position_dodge(1))
+viol_anx_base <- ggplot(Sara_dataset, aes(x = major, y = anx_base, fill = major)) +
+  geom_violin(trim = FALSE, position=position_dodge(1), alpha = 0.7) +
+  geom_boxplot(width= 0.2, position=position_dodge(1)) +
+  scale_fill_manual(values=c("psicologia" = "pink",
+                             "medicina" = "blue",
+                             "biologia" = "skyblue",
+                             "sociologia" = "orange",
+                             "economia" = "grey")) + 
   theme_minimal() +
   labs(
     title = "Distribuzione dei livelli di ansia per major",
@@ -134,26 +154,107 @@ viol_anx_base <- ggplot(Sara_dataset, aes(x = major, y = anx_base)) +
     y = "Livelli di ansia base",
     )
 ```
+
+::: columns
 ```{r}
 #| echo: false
 
 viol_anx_base
 ```
+:::
 
-## Violinplot dell'ansia di base
+## Violinplot dell'ansia di base {.unlisted}
 
-Sara ha analizzato la relazione fra l'ansia di base le diverse lauree.
+Da ciò che si evince dal grafico, gli studenti di psicologia e di sociologia presentano un'ansia di base maggiore rispetto agli studenti delle altre lauree, mentre i biologi appaiono meno ansiosi.
 
 . . .
 
-Da ciò che si evince dal grafico, gli studenti di psicologia e di sociologia presentano un'ansia di base maggiore rispetto agli studenti delle altre lauree, mentre i biologhi appaiono meno ansiosi.
+::::: columns
+::: {.column width="50%"}
+![Psicologa arrabbiata](figures/psicologo_arrabbiato.jpg){fig-align="center"}
+:::
 
+::: {.column width="50%"}
+![Sociologo arrabbiato](figures/sociologo_arrabbiato.webp){width="425" height="300" fig-align="center"}
+:::
 :::::
+
+## Violinplot dell'ansia pre e post
+
+Sara ha poi voluto analizzare l'ansia pre e post un test di matematica.
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: false
+
+viol_anx_pre <- ggplot(Sara_dataset, aes(x = major, y = anx_pre, fill = major)) +
+  geom_violin(trim = FALSE, position=position_dodge(1), alpha = 0.7) +
+  geom_boxplot(width= 0.2, position=position_dodge(1)) +
+  scale_fill_manual(values=c("psicologia" = "pink",
+                             "medicina" = "blue",
+                             "biologia" = "skyblue",
+                             "sociologia" = "orange",
+                             "economia" = "grey")) + 
+  theme_minimal() +
+  labs(
+    title = "Distribuzione dei livelli di ansia per major",
+    x = "Major",
+    y = "Livelli di ansia pre",
+    )
+```
+
+```{r}
+#| echo: false
+
+viol_anx_pre
+```
 :::
 
-![Psicologa arrabbiata](figures/psicologo_arrabbiato.jpg){width="250" height="150" fig-align="center"}
+::: {.column width="50%"}
+```{r}
+#| echo: false
+
+viol_anx_post <- ggplot(Sara_dataset, aes(x = major, y = anx_post, fill = major)) +
+  geom_violin(trim = FALSE, position=position_dodge(1), alpha = 0.7) +
+  geom_boxplot(width= 0.2, position=position_dodge(1)) +
+  scale_fill_manual(values=c("psicologia" = "pink",
+                             "medicina" = "blue",
+                             "biologia" = "skyblue",
+                             "sociologia" = "orange",
+                             "economia" = "grey")) + 
+  theme_minimal() +
+  labs(
+    title = "Distribuzione dei livelli di ansia per major",
+    x = "Major",
+    y = "Livelli di ansia post",
+    )
+```
+
+```{r}
+#| echo: false
+
+viol_anx_post
+```
+:::
+:::::
+
+## Violinplot dell'ansia pre e post {.unlisted auto-animate="true"}
+
+Anche in questo caso gli psicologi e i sociologi presentano livelli di ansia sia pre che post più alti di altri studenti, mentre si nota una maggior eterogeneità nei livelli di ansia per gli altri tre corsi di laurea.
+
+## Violinplot dell'ansia pre e post {.unlisted auto-animate="true"}
+
+Anche in questo caso gli psicologi e i sociologi presentano livelli di ansia sia pre che post più alti di altri studenti, mentre si nota una maggior eterogeneità nei livelli di ansia per gli altri tre corsi di laurea.
+
+Bisognerebbe indagare le possibile cause di questa maggior ansia matematica, per cui Sara dovrà condurre una nuova ricerca sulla psicometria come possibile fattore scatenante dell'ansia. 
+
+## Conclusioni {background-image="figures/psicologi_italiani.png" background-size="cover"}
+
+::: {style="text-align: center; font-size: 3em; color: black;"}
+<span class="fragment zoom-in">
+**PSICOLOGI ITALIANI NUMERI UNO SIAMO I PIù STRESSATI E ANSIOSI PER LA MATEMATICA**
+</span>
 :::
 
-:::
-![Sociologo arrabbiato](figures/sociologo_arrabbiato.webp){width="250" height="150" fig-align="center"}
-:::
+## References
