@@ -251,7 +251,7 @@ Bisognerebbe indagare le possibile cause di questa maggior ansia matematica, per
 
 ## Conclusioni {background-image="figures/psicologi_italiani.png" background-size="cover"}
 
-::: {style="text-align: center; font-size: 3em; color: black;"}
+::: {style="text-align: center; font-size: 2em; color: black;"}
 <span class="fragment zoom-in">
 **PSICOLOGI ITALIANI NUMERI UNO SIAMO I PIù STRESSATI E ANSIOSI PER LA MATEMATICA**
 </span>
